@@ -88,6 +88,7 @@ class Render(object):
     def glVertexColorAbsolute(self,x,y,color=None):
         try:
             self.pixels[y][x]=self.currentColor if color == None else color
+           
         except:
             #If tries to draw outside scren
             pass
@@ -330,13 +331,40 @@ class Render(object):
         for y in range(yMin,yMax):
                 count=0;  
                 for x in range(xMin,xMax):
-                    if(self.pixels[y][x]==self.currentColor):
-                        count=count+1   
-                    if(count%2==1):
-                        self.glVertexColorAbsolute(x,y)
-                                         
+                    try:
+                        if(self.pixels[y][x]==self.currentColor):
+                            count=count+1   
+                        if(count%2==1):
+                            vertexOnly=True
+                            for x2 in range(x,xMax+1):
+                                if(self.pixels[y][x2]==self.currentColor):
+                                    vertexOnly=False
+                            if(not vertexOnly):                           
+                                self.glVertexColorAbsolute(x,y)
+                    except:
+                        #Error coordinates
+                        pass
+        #Points in y that were not collored
+        for x in range(xMin,xMax): 
+            for y in range(yMin,yMax):
+                if(self.pixels[y-1][x]==self.currentColor and self.pixels[y+1][x]==self.currentColor):
+                    self.glVertexColorAbsolute(x,y)
+                # elif(self.pixels[y-1][x]==self.currentColor and self.pixels[y][x+1]==self.currentColor):
+                #     self.glVertexColorAbsolute(x,y)
+                # elif(self.pixels[y+1][x]==self.currentColor and self.pixels[y][x-1]==self.currentColor):
+                #     self.glVertexColorAbsolute(x,y)
+                # elif(self.pixels[y][x-1]==self.currentColor and self.pixels[y][x+1]==self.currentColor):
+                #     self.glVertexColorAbsolute(x,y)
+                                          
                 
-                
+    #Function to draw and paint any polygon from triangles
+    def glDrawAndPaintPolygonFromTriangles(self,vertexList):
+        #We count the vertex to know how to unite them
+        vertexCount=(len(vertexList))
+        self.glDrawAndPaintPolygon(vertexList)
+        for i in range(vertexCount):
+           self.glDrawAndPaintPolygon([vertexList[0],vertexList[1],vertexList[i]])
+           self.glDrawAndPaintPolygon([vertexList[0],vertexList[vertexCount-1],vertexList[i]])           
             
                 
      

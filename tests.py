@@ -18,19 +18,21 @@ polygon4=[(413, 177), (448, 159), (502, 88), (553, 53), (535, 36), (676, 37), (6
             (750, 145), (761, 179), (672, 192), (659, 214), (615, 214), (632, 230), 
             (580, 230),(597, 215), (552, 214), (517, 144), (466, 180)]
 polygon5=[(682, 175), (708, 120), (735, 148), (739, 170)]
+polygon6=[(100, 100), (100, 400), (800,400 ), (800, 100)]
 
-# mainGl.glColorRGB(1,0,0)
-# mainGl.glDrawPolygon(polygon1)
-# mainGl.glColorRGB(0,1,0)
-# mainGl.glDrawPolygon(polygon2)
-# mainGl.glColorRGB(0,0,1)
-# mainGl.glDrawPolygon(polygon3)
-# mainGl.glColorRGB(1,1,0)
-# mainGl.glDrawPolygon(polygon4)
-mainGl.glColorRGB(0,1,1)
+mainGl.glColorRGB(1,0,0)
+mainGl.glDrawAndPaintPolygon(polygon1)
+mainGl.glColorRGB(0,1,0)
+mainGl.glDrawAndPaintPolygon(polygon2)
+mainGl.glColorRGB(0,0,1)
+mainGl.glDrawAndPaintPolygon(polygon3)
+mainGl.glColorRGB(1,1,0)
+mainGl.glDrawAndPaintPolygon(polygon4)
+mainGl.glColorRGB(1,0,1)
 mainGl.glDrawAndPaintPolygon(polygon5)
 
 
 
 
-mainGl.glFinish('graphic.bmp')
+
+mainGl.glFinish('graphic1.bmp')
