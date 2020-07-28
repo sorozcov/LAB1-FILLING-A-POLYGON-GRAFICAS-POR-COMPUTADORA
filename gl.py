@@ -355,8 +355,56 @@ class Render(object):
                 #     self.glVertexColorAbsolute(x,y)
                 # elif(self.pixels[y][x-1]==self.currentColor and self.pixels[y][x+1]==self.currentColor):
                 #     self.glVertexColorAbsolute(x,y)
-                                          
+
+
+    #Function to draw and paint any polygon 
+    def glDrawAndPaintPolygonOddEven(self,vertexList):
+        #We save and max and min in y to paint them
+        xMin=vertexList[0][0]
+        xMax=vertexList[0][0]
+        yMin=vertexList[0][1]
+        yMax=vertexList[0][1]
+        for i in range(len(vertexList)):
+           
+            vertex=vertexList[i]
+            vertex1=vertexList[(i+1)%len(vertexList)]
+            xMin = xMin if(xMin<=vertex[0]) else vertex[0]
+            xMax = xMax if(xMax>=vertex[0]) else vertex[0]
+            yMin = yMin if(yMin<=vertex[1]) else vertex[1]
+            yMax = yMax if(yMax>=vertex[1]) else vertex[1]
+            #Now we can draw lines from vertex to vertex
+            try:
                 
+                x0=round(vertex[0])
+                y0=round(vertex[1])
+                
+                x1=round(vertex1[0])
+                y1=round(vertex1[1])
+                self.glLineAbsolute(x0,y0,x1,y1)
+            except:
+                #There must be an error on the vertexList
+                pass
+        for y in range(yMin,yMax):  
+            for x in range(xMin,xMax):
+                if(self.isPointInPolygon(x,y,vertexList)):
+                    self.glVertexColorAbsolute(x,y)
+
+    #Function to check oddEven
+    #Determine if point is in path
+    #https://handwiki.org/wiki/Even%E2%80%93odd_rule
+    #This code was extracted from the link before and it works perfectly
+    def isPointInPolygon(self,x, y, vertexList):
+        num = len(vertexList)
+        i = 0
+        j = num - 1
+        c = False
+        for i in range(num):
+            if ((vertexList[i][1] > y) != (vertexList[j][1] > y)) and \
+                    (x < vertexList[i][0] + (vertexList[j][0] - vertexList[i][0]) * (y - vertexList[i][1]) /
+                                    (vertexList[j][1] - vertexList[i][1])):
+                c = not c
+            j = i
+        return c     
     #Function to draw and paint any polygon from triangles
     def glDrawAndPaintPolygonFromTriangles(self,vertexList):
         #We count the vertex to know how to unite them
