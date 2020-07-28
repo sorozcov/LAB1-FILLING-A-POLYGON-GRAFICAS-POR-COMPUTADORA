@@ -394,17 +394,18 @@ class Render(object):
     #https://handwiki.org/wiki/Even%E2%80%93odd_rule
     #This code was extracted from the link before and it works perfectly
     def isPointInPolygon(self,x, y, vertexList):
-        num = len(vertexList)
+        vertexCount = len(vertexList)
         i = 0
-        j = num - 1
-        c = False
-        for i in range(num):
+        j = vertexCount - 1
+        inPolygon = False
+        for i in range(vertexCount):
             if ((vertexList[i][1] > y) != (vertexList[j][1] > y)) and \
                     (x < vertexList[i][0] + (vertexList[j][0] - vertexList[i][0]) * (y - vertexList[i][1]) /
                                     (vertexList[j][1] - vertexList[i][1])):
-                c = not c
+                inPolygon = not inPolygon
             j = i
-        return c     
+        return inPolygon    
+        
     #Function to draw and paint any polygon from triangles
     def glDrawAndPaintPolygonFromTriangles(self,vertexList):
         #We count the vertex to know how to unite them
