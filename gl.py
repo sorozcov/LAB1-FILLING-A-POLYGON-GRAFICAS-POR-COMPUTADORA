@@ -278,7 +278,8 @@ class Render(object):
                     pass
       
     #Function to draw any polygon
-    def glDrawPolygon(self,vertexList):
+    def glDrawPolygon(self,vertexList,color=None):
+        color=self.currentColor if color == None else color
         #We save and max and min in y to paint them
         xMin=None
         xMax=None
@@ -296,13 +297,14 @@ class Render(object):
                 
                 x1=round(vertex1[0])
                 y1=round(vertex1[1])
-                self.glLineAbsolute(x0,y0,x1,y1)
+                self.glLineAbsolute(x0,y0,x1,y1,color)
             except:
                 #There must be an error on the vertexList
                 pass
 
     #Function to draw and paint any polygon
-    def glDrawAndPaintPolygon(self,vertexList):
+    def glDrawAndPaintPolygon(self,vertexList,color=None):
+        color=self.currentColor if color == None else color
         #We save and max and min in y to paint them
         xMin=vertexList[0][0]
         xMax=vertexList[0][0]
@@ -324,7 +326,7 @@ class Render(object):
                 
                 x1=round(vertex1[0])
                 y1=round(vertex1[1])
-                self.glLineAbsolute(x0,y0,x1,y1)
+                self.glLineAbsolute(x0,y0,x1,y1,color)
             except:
                 #There must be an error on the vertexList
                 pass
@@ -332,23 +334,23 @@ class Render(object):
                 count=0;  
                 for x in range(xMin,xMax):
                     try:
-                        if(self.pixels[y][x]==self.currentColor):
+                        if(self.pixels[y][x]==color):
                             count=count+1   
                         if(count%2==1):
                             vertexOnly=True
                             for x2 in range(x,xMax+1):
-                                if(self.pixels[y][x2]==self.currentColor):
+                                if(self.pixels[y][x2]==color):
                                     vertexOnly=False
                             if(not vertexOnly):                           
-                                self.glVertexColorAbsolute(x,y)
+                                self.glVertexColorAbsolute(x,y,color)
                     except:
                         #Error coordinates
                         pass
         #Points in y that were not collored
         for x in range(xMin,xMax): 
             for y in range(yMin,yMax):
-                if(self.pixels[y-1][x]==self.currentColor and self.pixels[y+1][x]==self.currentColor):
-                    self.glVertexColorAbsolute(x,y)
+                if(self.pixels[y-1][x]==color and self.pixels[y+1][x]==color):
+                    self.glVertexColorAbsolute(x,y,color)
                 # elif(self.pixels[y-1][x]==self.currentColor and self.pixels[y][x+1]==self.currentColor):
                 #     self.glVertexColorAbsolute(x,y)
                 # elif(self.pixels[y+1][x]==self.currentColor and self.pixels[y][x-1]==self.currentColor):
@@ -358,7 +360,8 @@ class Render(object):
 
 
     #Function to draw and paint any polygon 
-    def glDrawAndPaintPolygonOddEven(self,vertexList):
+    def glDrawAndPaintPolygonOddEven(self,vertexList,color=None):
+        color=self.currentColor if color == None else color
         #We save and max and min in y to paint them
         xMin=vertexList[0][0]
         xMax=vertexList[0][0]
@@ -380,14 +383,14 @@ class Render(object):
                 
                 x1=round(vertex1[0])
                 y1=round(vertex1[1])
-                self.glLineAbsolute(x0,y0,x1,y1)
+                self.glLineAbsolute(x0,y0,x1,y1,color)
             except:
                 #There must be an error on the vertexList
                 pass
         for y in range(yMin,yMax):  
             for x in range(xMin,xMax):
                 if(self.isPointInPolygon(x,y,vertexList)):
-                    self.glVertexColorAbsolute(x,y)
+                    self.glVertexColorAbsolute(x,y,color)
 
     #Function to check oddEven
     #Determine if point is in path
